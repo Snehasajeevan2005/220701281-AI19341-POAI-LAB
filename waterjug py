@@ -1,0 +1,35 @@
+def dfs_solution(jug1, jug2, target):
+    visited = set()
+    stack = [(0, 0)]
+    
+    while stack:
+        state = stack.pop()
+        if state in visited:
+            continue
+        visited.add(state)
+        x, y = state
+        
+        if x == target or y == target:
+            return f"Solution: {state}"
+        
+        next_states = [
+            (jug1, y),  # Fill Jug 1
+            (x, jug2),  # Fill Jug 2
+            (0, y),     # Empty Jug 1
+            (x, 0),     # Empty Jug 2
+            (min(x + y, jug1), max(0, x + y - jug1)),  # Pour Jug 2 into Jug 1
+            (max(0, x + y - jug2), min(x + y, jug2))   # Pour Jug 1 into Jug 2
+        ]
+
+        for next_state in next_states:
+            if next_state not in visited:
+                stack.append(next_state)
+    
+    return "No solution."
+
+# Input from user
+jug1 = int(input("Enter capacity of Jug 1: "))
+jug2 = int(input("Enter capacity of Jug 2: "))
+target = int(input("Enter target amount: "))
+print(dfs_solution(jug1, jug2, target))
+ 
